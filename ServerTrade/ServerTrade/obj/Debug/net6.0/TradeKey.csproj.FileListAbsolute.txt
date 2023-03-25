@@ -1,0 +1,13 @@
+C:\Users\emr3c\VSProjects\TradeKey\TradeKey\bin\Debug\net6.0\HttpServer.dll
+C:\Users\emr3c\VSProjects\TradeKey\TradeKey\bin\Debug\net6.0\TradeKey.deps.json
+C:\Users\emr3c\VSProjects\TradeKey\TradeKey\bin\Debug\net6.0\TradeKey.dll
+C:\Users\emr3c\VSProjects\TradeKey\TradeKey\bin\Debug\net6.0\TradeKey.pdb
+C:\Users\emr3c\VSProjects\TradeKey\TradeKey\obj\Debug\net6.0\TradeKey.csproj.AssemblyReference.cache
+C:\Users\emr3c\VSProjects\TradeKey\TradeKey\obj\Debug\net6.0\TradeKey.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\emr3c\VSProjects\TradeKey\TradeKey\obj\Debug\net6.0\TradeKey.AssemblyInfoInputs.cache
+C:\Users\emr3c\VSProjects\TradeKey\TradeKey\obj\Debug\net6.0\TradeKey.AssemblyInfo.cs
+C:\Users\emr3c\VSProjects\TradeKey\TradeKey\obj\Debug\net6.0\TradeKey.csproj.CoreCompileInputs.cache
+C:\Users\emr3c\VSProjects\TradeKey\TradeKey\obj\Debug\net6.0\TradeKey.dll
+C:\Users\emr3c\VSProjects\TradeKey\TradeKey\obj\Debug\net6.0\refint\TradeKey.dll
+C:\Users\emr3c\VSProjects\TradeKey\TradeKey\obj\Debug\net6.0\TradeKey.pdb
+C:\Users\emr3c\VSProjects\TradeKey\TradeKey\obj\Debug\net6.0\ref\TradeKey.dll
