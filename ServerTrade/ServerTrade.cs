@@ -51,6 +51,10 @@ namespace ServerTrade {
         }
         public void TradeCmd(CommandArgs args) {
             TSPlayer Player = args.Player;
+            if(args.Parameters.Count == 0) {
+                Player.SendErrorMessage("No item name given.");
+                return;
+            }
             string itemName = args.Parameters[0];
             for(int i=1; i<args.Parameters.Count; i++) {
                 itemName += args.Parameters[i];
