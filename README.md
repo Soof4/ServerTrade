@@ -12,7 +12,7 @@ Under the shopList dictionary you need to add items like:
 ```
 "ItemName": [itemID, itemAmount, RequirementItemID, AmountofRequirementItem]
 ```
-Note: ItemName should not any include whitespaces. Plus, if requirement item is not stackable and requirement amount is greater than 1, then players won't be able to trade that item due to how plugins checks items in the inventory.
+Note: ItemName should not any include whitespaces. Plus, if requirement item is not stackable and requirement amount is greater than 1, then players won't be able to trade that item due to how plugin checks items in the inventory.
 
 
 
