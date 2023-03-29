@@ -29,6 +29,7 @@ namespace ServerTrade {
         public override void Initialize() {
             GeneralHooks.ReloadEvent += OnReload;
             Commands.ChatCommands.Add(new Command("servertrade.trade", TradeCmd, "trade") {
+                AllowServer = false,
                 HelpText = "Usage: \"/trade ItemName\" (Case sensitive)"
             });
 
@@ -49,18 +50,14 @@ namespace ServerTrade {
             e.Player.SendSuccessMessage("ServerTrade plugin has been reloaded.");
         }
         public void TradeCmd(CommandArgs args) {
-            if (args.Player.RealPlayer == false) {
-                return;
-            }
             TSPlayer Player = args.Player;
-
-            if (args.Parameters.Count != 1 ) {
-                Player.SendErrorMessage("Invalid command usage. Expected usage is: /trade itemName");
-                return;
+            string itemName = args.Parameters[0];
+            for(int i=1; i<args.Parameters.Count; i++) {
+                itemName += args.Parameters[i];
             }
 
             foreach(var kvp in Config.shopList) {
-                if(kvp.Key.Equals(args.Parameters[0])) {
+                if(kvp.Key.ToLowerInvariant().Equals(itemName.ToLowerInvariant())) {
                     for (int i = 0; i < NetItem.InventorySlots; i++) {
                         if (Player.TPlayer.inventory[i].netID == kvp.Value.ToArray()[2] && Player.TPlayer.inventory[i].stack >= kvp.Value.ToArray()[3]) {
                             // 0 = itemget id, 1 = itemget amount, 2 itemrequired id, 3 = itemreq amount
