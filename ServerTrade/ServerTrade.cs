@@ -17,7 +17,7 @@ namespace ServerTrade {
     public class ServerTrade : TerrariaPlugin {
 
         public override string Name => "ServerTrade";
-        public override Version Version => new Version(1, 1);
+        public override Version Version => new Version(1, 1, 1);
         public override string Author => "Soofa";
         public override string Description => "Let's users trade items with the server";
 
@@ -55,29 +55,53 @@ namespace ServerTrade {
                 Player.SendErrorMessage("No item name given.");
                 return;
             }
-            string itemName = args.Parameters[0];
-            for(int i=1; i<args.Parameters.Count; i++) {
-                itemName += args.Parameters[i];
+
+            int amount, givenAmount;
+            string itemName;
+            if (int.TryParse(args.Parameters[^1], out amount)) {
+                itemName = string.Join("", args.Parameters.GetRange(0, args.Parameters.Count - 1));
+            }
+            else {
+                amount = 1;
+                itemName = string.Join("", args.Parameters);
             }
 
+            int[]? offer = null;
             foreach(var kvp in Config.shopList) {
-                if(kvp.Key.ToLowerInvariant().Equals(itemName.ToLowerInvariant())) {
-                    for (int i = 0; i < NetItem.InventorySlots; i++) {
-                        if (Player.TPlayer.inventory[i].netID == kvp.Value.ToArray()[2] && Player.TPlayer.inventory[i].stack >= kvp.Value.ToArray()[3]) {
-                            // 0 = itemget id, 1 = itemget amount, 2 itemrequired id, 3 = itemreq amount
-                            Player.TPlayer.inventory[i].stack -= kvp.Value.ToArray()[3];
-                            NetMessage.SendData((int)PacketTypes.PlayerSlot, -1, -1, NetworkText.FromLiteral(Player.TPlayer.inventory[i].Name), Player.Index, i);
-                            NetMessage.SendData((int)PacketTypes.PlayerSlot, Player.Index, -1, NetworkText.FromLiteral(Player.TPlayer.inventory[i].Name), Player.Index, i);
-                            Player.GiveItem(kvp.Value.ToArray()[0], kvp.Value.ToArray()[1]);
-                            Player.SendSuccessMessage("Trade was succesful!");
-                            return;
-                        }
-                    }
-                    Player.SendErrorMessage($"You do not have {kvp.Value.ToArray()[3]} {TShock.Utils.GetItemById(kvp.Value.ToArray()[2]).Name}.");
-                    return;
+                if(kvp.Key.ToLowerInvariant().Replace(" ", "").Equals(itemName.ToLowerInvariant())) {
+                    offer = kvp.Value;
+                    break;
+                }    
+            }
+
+            if (offer == null) {
+                Player.SendErrorMessage("Item not found.");
+                return;
+            }
+
+
+            for (int i = givenAmount = 0; i < NetItem.InventorySlots && amount > givenAmount; i++) {
+                if (Player.TPlayer.inventory[i].netID == offer[2] && Player.TPlayer.inventory[i].stack >= offer[3]) {
+                    // 0: item id, 1: item amount, 2: itemreq id, 3: itemreq amount
+                    Player.TPlayer.inventory[i].stack -= offer[3];
+                    NetMessage.SendData((int)PacketTypes.PlayerSlot, -1, -1, NetworkText.FromLiteral(Player.TPlayer.inventory[i].Name), Player.Index, i);
+                    NetMessage.SendData((int)PacketTypes.PlayerSlot, Player.Index, -1, NetworkText.FromLiteral(Player.TPlayer.inventory[i].Name), Player.Index, i);
+                    Player.GiveItem(offer[0], offer[1]);
+                    givenAmount++;
+                    i--;
                 }
             }
-            Player.SendErrorMessage("Item not found.");
+
+            if (givenAmount == 0) {
+                Player.SendErrorMessage($"You do not have {offer[3]} {TShock.Utils.GetItemById(offer[2]).Name}.");
+            }
+            else if (amount > givenAmount) {
+                Player.SendErrorMessage($"You could only afford {givenAmount} {TShock.Utils.GetItemById(offer[0]).Name}.");
+            }
+            else {
+                Player.SendSuccessMessage("Trade was succesful!");
+            }
+
             return;
         }
     }
